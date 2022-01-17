@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -10,10 +11,6 @@ namespace PrzychodniaFinal.Models
         [Key]
 
         public int IdPracownika { get; set; }
-
-        [Required(ErrorMessage = "Wprowadź Id Pracownika")]
-        [Display(Name = "Id")]
-        public string Imie { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Numer Pesel Pracownika")]
         [Display(Name = "Pesel")]
@@ -35,12 +32,12 @@ namespace PrzychodniaFinal.Models
 
         [Required(ErrorMessage = "Wprowadź Datę Zatrudnienia Pracownika")]
         [Display(Name = "DataZatrudnienia")]
-        [RegularExpression("d/M/yyyy", "dd/M/yyyy", "d/MM/yyyy", "dd/MM/yyyy"), ErrorMessage = "Wprowadź datę")]
+        [RegularExpression("d/M/yyyy || dd/M/yyyy || d/MM/yyyy || dd/MM/yyyy")]
         public string DataZatrudnienia { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Koniec Kontraktu Pracownika")]
         [Display(Name = "KoniecKontraktu")]
-        [RegularExpression("d/M/yyyy", "dd/M/yyyy", "d/MM/yyyy", "dd/MM/yyyy", ErrorMessage = "Wprowadź datę")]
+        [RegularExpression("d/M/yyyy || dd/M/yyyy || d/MM/yyyy || dd/MM/yyyy")]
         public string KoniecKontraktu { get; set; }
 
         public virtual Lekarze Lekarze { get; set; }
