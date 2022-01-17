@@ -17,6 +17,7 @@ namespace PrzychodniaFinal.Controllers
         }
 
         [HttpPost]
+
         public async Task<IActionResult> Create(Pacjenci pacjenci)
         {
             if (ModelState.IsValid)
@@ -25,6 +26,10 @@ namespace PrzychodniaFinal.Controllers
                 return RedirectToAction("Index");
             }
             return View(pacjenci);
+        }
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }
