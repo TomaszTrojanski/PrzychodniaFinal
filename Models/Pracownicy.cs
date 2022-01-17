@@ -12,10 +12,6 @@ namespace PrzychodniaFinal.Models
 
         public int IdPracownika { get; set; }
 
-        [Required(ErrorMessage = "Wprowadź Id Pracownika")]
-        [Display(Name = "Id")]
-        public string Id { get; set; }
-
         [Required(ErrorMessage = "Wprowadź Numer Pesel Pracownika")]
         [Display(Name = "Pesel")]
         [StringLength(11)]
