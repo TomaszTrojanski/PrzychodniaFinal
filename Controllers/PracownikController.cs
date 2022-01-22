@@ -32,5 +32,10 @@ namespace PrzychodniaFinal.Controllers
         {
             return View();
         }
+
+        public IActionResult Utworz_pracownika()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
