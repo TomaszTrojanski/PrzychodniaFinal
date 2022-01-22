@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrzychodniaFinal.DataAccess;
 using PrzychodniaFinal.Models;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace PrzychodniaFinal.Repos
 {
     public class PacjentRepo : IPacjentRepo
     {
-        private readonly PrzychodniaContext _dbContext;
-        public PacjentRepo(PrzychodniaContext dbContext)
+        private readonly PrzychodniaDBContext _dbContext;
+        public PacjentRepo(PrzychodniaDBContext dbContext)
         {
             _dbContext = dbContext;
         }

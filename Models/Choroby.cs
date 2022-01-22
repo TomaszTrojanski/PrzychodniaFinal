@@ -7,9 +7,9 @@ namespace PrzychodniaFinal.Models
 {
     public partial class Choroby
     {
-        public int IdChoroby { get; set; }
-        public int IdRecepty { get; set; }
-        public int IdPracownika { get; set; }
+        public int ChorobyID { get; set; }
+        public int PacjenciID { get; set; }
+        public int PracownicyID { get; set; }
         public int IdPacjenta { get; set; }
         public string PrzebiegChoroby { get; set; }
 

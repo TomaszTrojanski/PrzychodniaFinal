@@ -27,9 +27,13 @@ namespace PrzychodniaFinal.Controllers
         {
             return View();
         }
-        public IActionResult Create()
+        public IActionResult ContactForm()
         {
             return View();
+        }
+        public IActionResult Create()
+        {
+            return View("~/Views/Pacjent/Create.cshtml");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
