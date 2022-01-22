@@ -19,7 +19,7 @@ namespace PrzychodniaFinal.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Create(Pracownicy pracownicy)
+        public async Task<IActionResult> Utwórz_pracownika(Pracownicy pracownicy)
         {
             if (ModelState.IsValid)
             {
@@ -28,7 +28,7 @@ namespace PrzychodniaFinal.Controllers
             }
             return View(pracownicy);
         }
-        public IActionResult Create()
+        public IActionResult Utwórz_pracownika()
         {
             return View();
         }

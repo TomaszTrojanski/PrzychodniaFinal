@@ -35,6 +35,10 @@ namespace PrzychodniaFinal.Controllers
         {
             return View("~/Views/Pacjent/Create.cshtml");
         }
+        public IActionResult PracownikCreate()
+        {
+            return View("~/Views/Pracownik/PracownikCreate.cshtml");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
