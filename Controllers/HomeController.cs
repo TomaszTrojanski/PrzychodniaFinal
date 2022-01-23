@@ -31,13 +31,25 @@ namespace PrzychodniaFinal.Controllers
         {
             return View();
         }
-        public IActionResult Create()
+        public IActionResult PacjentIndex()
         {
-            return View("~/Views/Pacjent/Create.cshtml");
+            return View("~/Views/Pacjencis/Index.cshtml");
         }
-        public IActionResult PracownikCreate()
+        public IActionResult PacjentCreate()
         {
-            return View("~/Views/Pracownik/PracownikCreate.cshtml");
+            return View("~/Views/Pacjencis/Create.cshtml");
+        }
+        public IActionResult PacjentDelete()
+        {
+            return View("~/Views/Pacjencis/Delete.cshtml");
+        }
+        public IActionResult PacjentDetails()
+        {
+            return View("~/Views/Pacjencis/Details.cshtml");
+        }
+        public IActionResult PacjentEdit()
+        {
+            return View("~/Views/Pacjencis/Edit.cshtml");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
