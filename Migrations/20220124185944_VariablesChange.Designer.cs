@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrzychodniaFinal.DataAccess;
 
 namespace PrzychodniaFinal.Migrations
 {
     [DbContext(typeof(PrzychodniaDBContext))]
-    partial class PrzychodniaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220124185944_VariablesChange")]
+    partial class VariablesChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

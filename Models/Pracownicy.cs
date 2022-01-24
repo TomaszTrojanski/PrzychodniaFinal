@@ -16,7 +16,7 @@ namespace PrzychodniaFinal.Models
         [Display(Name = "Pesel")]
         [MaxLength(11)]
         [Column(TypeName = "varchar(11)")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Wprowadź cyfry")]
+        [RegularExpression("(^[0-9]*$)", ErrorMessage = "Wprowadź cyfry")]
         public string Pesel { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Imię Pracownika")]
@@ -36,13 +36,15 @@ namespace PrzychodniaFinal.Models
 
         [Required(ErrorMessage = "Wprowadź Datę Zatrudnienia Pracownika")]
         [Display(Name = "DataZatrudnienia")]
-        [RegularExpression("d/M/yyyy || dd/M/yyyy || d/MM/yyyy || dd/MM/yyyy")]
-        public string DataZatrudnienia { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime DataZatrudnienia { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Koniec Kontraktu Pracownika")]
         [Display(Name = "KoniecKontraktu")]
-        [RegularExpression("d/M/yyyy || dd/M/yyyy || d/MM/yyyy || dd/MM/yyyy")]
-        public string KoniecKontraktu { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime KoniecKontraktu { get; set; }
 
         public virtual Lekarze Lekarze { get; set; }
     }

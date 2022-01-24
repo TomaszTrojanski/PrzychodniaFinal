@@ -26,8 +26,14 @@ namespace PrzychodniaFinal.Models
         [Display(Name = "Pesel")]
         [MaxLength(11)]
         [Column(TypeName = "varchar(11)")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Wprowadź cyfry")]
+        [RegularExpression("(^[0-9]*$)", ErrorMessage = "Wprowadź cyfry")]
         public string Pesel { get; set; }
+
+        [Required(ErrorMessage = "Wprowadź Datę Urodzenia Pacjenta")]
+        [Display(Name = "Data Urodzenia")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime DataUrodzenia { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Adres Pacjenta")]
         [MaxLength(100)]
