@@ -31,17 +31,17 @@ namespace PrzychodniaFinal.Models
 
         [Required(ErrorMessage = "Wprowadź Adres Pracownika")]
         [MaxLength(100)]
-        [Display(Name = "AdresZamieszkania")]
+        [Display(Name = "Adres Zamieszkania")]
         public string AdresZamieszkania { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Datę Zatrudnienia Pracownika")]
-        [Display(Name = "DataZatrudnienia")]
+        [Display(Name = "Data Zatrudnienia")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataZatrudnienia { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Koniec Kontraktu Pracownika")]
-        [Display(Name = "KoniecKontraktu")]
+        [Display(Name = "Koniec Kontraktu")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime KoniecKontraktu { get; set; }
