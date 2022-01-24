@@ -1,14 +1,16 @@
 ﻿@model PrzychodniaFinal.Models.Pracownicy
 
 @{
-    ViewData["Title"] = "Utworz_pracownika";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Dodaj pracownika</h1>
+<h1>Create</h1>
+
+<h4>Pracownicy</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Utworz_pracownika">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Imie" class="control-label"></label>
@@ -38,7 +40,7 @@
             <div class="form-group">
                 <label asp-for="KoniecKontraktu" class="control-label">Koniec kontraktu</label>
                 <input asp-for="KoniecKontraktu" class="form-control" />
-                <span asp-validation-for="AdresZamieszkania" class="text-danger"></span>
+                <span asp-validation-for="KoniecKontraktu" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
