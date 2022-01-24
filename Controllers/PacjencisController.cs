@@ -18,14 +18,10 @@ namespace PrzychodniaFinal.Controllers
         {
             _context = context;
         }
-
-        // GET: Pacjenci
         public async Task<IActionResult> Index()
         {
             return View(await _context.Pacjencis.ToListAsync());
         }
-
-        // GET: PacjentDetails
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,16 +38,11 @@ namespace PrzychodniaFinal.Controllers
 
             return View(pacjenci);
         }
-
-        // GET: PacjentCreate
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Pacjencis/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,AdresZamieszkania")] Pacjenci pacjenci)
@@ -64,8 +55,6 @@ namespace PrzychodniaFinal.Controllers
             }
             return View(pacjenci);
         }
-
-        // GET: Pacjencis/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,9 +70,6 @@ namespace PrzychodniaFinal.Controllers
             return View(pacjenci);
         }
 
-        // POST: Pacjencis/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PacjenciID,Imie,Nazwisko,Pesel,AdresZamieszkania")] Pacjenci pacjenci)
@@ -115,8 +101,6 @@ namespace PrzychodniaFinal.Controllers
             }
             return View(pacjenci);
         }
-
-        // GET: Pacjencis/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +118,6 @@ namespace PrzychodniaFinal.Controllers
             return View(pacjenci);
         }
 
-        // POST: Pacjencis/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

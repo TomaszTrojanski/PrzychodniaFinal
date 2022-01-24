@@ -24,6 +24,7 @@ namespace PrzychodniaFinal.Models
 
         [Required(ErrorMessage = "Wprowadź Numer Pesel Pacjenta")]
         [Display(Name = "Pesel")]
+        [MinLength(11)]
         [MaxLength(11)]
         [Column(TypeName = "varchar(11)")]
         [RegularExpression("(^[0-9]*$)", ErrorMessage = "Wprowadź cyfry")]
