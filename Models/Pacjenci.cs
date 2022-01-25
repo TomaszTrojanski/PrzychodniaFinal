@@ -35,7 +35,6 @@ namespace PrzychodniaFinal.Models
         [Display(Name = "Data Urodzenia")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        [Remote("ValidateDateEqualOrGreater", HttpMethod = "Post", ErrorMessage = "Data nie może być większa niż data dzisiejsza.")]
         public DateTime DataUrodzenia { get; set; }
 
         [Required(ErrorMessage = "Wprowadź Adres Pacjenta")]

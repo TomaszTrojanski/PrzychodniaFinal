@@ -158,16 +158,5 @@ namespace PrzychodniaFinal.Controllers
         {
             return _context.Pacjencis.Any(e => e.PacjenciID == id);
         }
-        [HttpPost]
-        public ActionResult ValidateDateEqualOrGreater(DateTime Date)
-        {
-            if (Date >= DateTime.Now)
-            {
-                return Json(true);
-            }
-            return Json(false);
-        }
-
-
     }
 }
