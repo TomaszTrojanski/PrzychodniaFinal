@@ -18,13 +18,19 @@ namespace PrzychodniaFinal.Controllers
         {
             _context = context;
         }
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.HireDateSort = sortOrder == "HireDate" ? "hiredate_desc" : "HireDate";
             ViewBag.EndDateSort = sortOrder == "EndDate" ? "enddate_desc" : "EndDate";
             var pracownicy = from s in _context.Pracownicies
                            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pracownicy = pracownicy.Where(s => s.Imie.Contains(searchString)
+                                       || s.Nazwisko.Contains(searchString)
+                                       || s.Pesel.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "name_desc":

@@ -19,12 +19,18 @@ namespace PrzychodniaFinal.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string sortOrder)
-        {
+        public IActionResult Index(string sortOrder, string searchString)
+        {    
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.BirthDateSort = sortOrder == "Date" ? "date_desc" : "Date";
             var pacjenci = from s in _context.Pacjencis
                            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pacjenci = pacjenci.Where(s => s.Imie.Contains(searchString)
+                                       || s.Nazwisko.Contains(searchString)
+                                       || s.Pesel.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "name_desc":
@@ -162,6 +168,6 @@ namespace PrzychodniaFinal.Controllers
             return Json(false);
         }
 
-    }
+
     }
 }
