@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PrzychodniaFinal.services;
+using PrzychodniaFinal.Services;
 
 namespace PrzychodniaFinal
 {
@@ -33,7 +34,8 @@ namespace PrzychodniaFinal
             });
 
             services.AddControllersWithViews();
-            services.AddScoped<IPacjenciServices,PacjenciService>()
+            services.AddScoped<IPacjenciServices, PacjenciService>();
+            services.AddScoped<IPracownicyServices, PracownicyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

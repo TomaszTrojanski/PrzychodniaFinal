@@ -14,20 +14,20 @@ namespace PrzychodniaFinal.Controllers
 {
     public class PacjencisController : Controller
     {
-        private readonly PrzychodniaDBContext _context;
+        private readonly PrzychodniaDBContext context;
         private readonly IPacjenciServices service;
 
         public PacjencisController(PrzychodniaDBContext context, IPacjenciServices service)
         {
-            _context = context;
+            this.context = context;
             this.service = service;
         }
-        public IActionResult Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {    
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.BirthDateSort = sortOrder == "Date" ? "date_desc" : "Date";
 
-            var pacjenci= service.GetPacjenci(sortOrder, searchString);
+            var pacjenci = await service.GetPacjenci(sortOrder, searchString);
 
             return View(pacjenci);
         }
@@ -38,7 +38,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pacjenci = await _context.Pacjencis
+            var pacjenci = await context.Pacjencis
                 .FirstOrDefaultAsync(m => m.PacjenciID == id);
             if (pacjenci == null)
             {
@@ -47,22 +47,20 @@ namespace PrzychodniaFinal.Controllers
 
             return View(pacjenci);
         }
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,DataUrodzenia,AdresZamieszkania")] Pacjenci pacjenci)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pacjenci);
-                await _context.SaveChangesAsync();
+                await service.Create(pacjenci);
                 return RedirectToAction(nameof(Index));
             }
             return View(pacjenci);
+        }
+        public IActionResult Create()
+        {
+            return View();
         }
         public async Task<IActionResult> Edit(int? id)
         {
@@ -71,7 +69,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pacjenci = await _context.Pacjencis.FindAsync(id);
+            var pacjenci = await service.GetPatientById(id);
             if (pacjenci == null)
             {
                 return NotFound();
@@ -90,22 +88,7 @@ namespace PrzychodniaFinal.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(pacjenci);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PacjenciExists(pacjenci.PacjenciID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await service.Edit(id, pacjenci);               
                 return RedirectToAction(nameof(Index));
             }
             return View(pacjenci);
@@ -117,7 +100,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pacjenci = await _context.Pacjencis
+            var pacjenci = await context.Pacjencis
                 .FirstOrDefaultAsync(m => m.PacjenciID == id);
             if (pacjenci == null)
             {
@@ -131,15 +114,8 @@ namespace PrzychodniaFinal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pacjenci = await _context.Pacjencis.FindAsync(id);
-            _context.Pacjencis.Remove(pacjenci);
-            await _context.SaveChangesAsync();
+            await service.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PacjenciExists(int id)
-        {
-            return _context.Pacjencis.Any(e => e.PacjenciID == id);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrzychodniaFinal.DataAccess;
 using PrzychodniaFinal.Models;
@@ -12,27 +13,49 @@ namespace PrzychodniaFinal.services
     public interface IPacjenciServices
     {
         public Task<List<Pacjenci>> GetPacjenci(string sortOrder, string searchString);
-
-
+        public Task<Pacjenci> GetPatientById(int? id);
+        public Task Delete(int id);
+        public Task Edit(int id, Pacjenci pacjenci);
+        public Task Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,DataUrodzenia,AdresZamieszkania")] Pacjenci pacjenci);
 
     }
-    public class PacjenciService:IPacjenciServices
+    public class PacjenciService : IPacjenciServices
     {
         private readonly PrzychodniaDBContext context;
-
         public PacjenciService(PrzychodniaDBContext context)
         {
             this.context = context;
         }
 
+        public async Task Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,DataUrodzenia,AdresZamieszkania")] Pacjenci pacjenci)
+        {
+                context.Add(pacjenci);
+                await context.SaveChangesAsync();
+        }
+        public async Task Delete(int id)
+        {
+            var pacjenci = await context.Pacjencis.FindAsync(id);
+            context.Pacjencis.Remove(pacjenci);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task Edit(int id, Pacjenci pacjenci)
+        {
+                context.Update(pacjenci);
+                await context.SaveChangesAsync();
+        }
+        public async Task<Pacjenci> GetPatientById(int? id)
+        {
+            return await context.Pacjencis.FindAsync(id);
+        }
         public async Task<List<Pacjenci>> GetPacjenci(string sortOrder, string searchString)
         {
             var pacjenci = await context.Pacjencis.ToListAsync();
             if (!String.IsNullOrEmpty(searchString))
             {
-                pacjenci = (List<Pacjenci>)pacjenci.Where(s => s.Imie.Contains(searchString)
+                pacjenci = pacjenci.Where(s => s.Imie.Contains(searchString)
                                                                || s.Nazwisko.Contains(searchString)
-                                                               || s.Pesel.Contains(searchString));
+                                                               || s.Pesel.Contains(searchString)).ToList();
             }
             switch (sortOrder)
             {

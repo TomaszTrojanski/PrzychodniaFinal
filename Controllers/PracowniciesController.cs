@@ -7,52 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PrzychodniaFinal.DataAccess;
 using PrzychodniaFinal.Models;
+using PrzychodniaFinal.Services;
 
 namespace PrzychodniaFinal.Controllers
 {
     public class PracowniciesController : Controller
     {
-        private readonly PrzychodniaDBContext _context;
+        private readonly PrzychodniaDBContext context;
+        private readonly IPracownicyServices service;
 
-        public PracowniciesController(PrzychodniaDBContext context)
+        public PracowniciesController(PrzychodniaDBContext context, IPracownicyServices service)
         {
-            _context = context;
+            this.service = service;
+            this.context = context;
         }
-        public ActionResult Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.HireDateSort = sortOrder == "HireDate" ? "hiredate_desc" : "HireDate";
             ViewBag.EndDateSort = sortOrder == "EndDate" ? "enddate_desc" : "EndDate";
-            var pracownicy = from s in _context.Pracownicies
-                           select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                pracownicy = pracownicy.Where(s => s.Imie.Contains(searchString)
-                                       || s.Nazwisko.Contains(searchString)
-                                       || s.Pesel.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    pracownicy = pracownicy.OrderByDescending(s => s.Nazwisko);
-                    break;
-                case "HireDate":
-                    pracownicy = pracownicy.OrderBy(s => s.DataZatrudnienia);
-                    break;
-                case "EndDate":
-                    pracownicy = pracownicy.OrderBy(s => s.KoniecKontraktu);
-                    break;
-                case "hiredate_desc":
-                    pracownicy = pracownicy.OrderByDescending(s => s.DataZatrudnienia);
-                    break;
-                case "enddate_desc":
-                    pracownicy = pracownicy.OrderByDescending(s => s.KoniecKontraktu);
-                    break;
-                default:
-                    pracownicy = pracownicy.OrderBy(s => s.Nazwisko);
-                    break;
-            }
-            return View(pracownicy.ToList());
+
+            var pracownicy = await service.GetEmployees(sortOrder, searchString);
+
+            return View(pracownicy);
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -61,7 +38,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pracownicy = await _context.Pracownicies
+            var pracownicy = await context.Pracownicies
                 .FirstOrDefaultAsync(m => m.PracownicyID == id);
             if (pracownicy == null)
             {
@@ -81,8 +58,7 @@ namespace PrzychodniaFinal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pracownicy);
-                await _context.SaveChangesAsync();
+                await service.Create(pracownicy);
                 return RedirectToAction(nameof(Index));
             }
             return View(pracownicy);
@@ -94,7 +70,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pracownicy = await _context.Pracownicies.FindAsync(id);
+            var pracownicy = await context.Pracownicies.FindAsync(id);
             if (pracownicy == null)
             {
                 return NotFound();
@@ -113,22 +89,7 @@ namespace PrzychodniaFinal.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(pracownicy);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PracownicyExists(pracownicy.PracownicyID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await service.Edit(id, pracownicy);
                 return RedirectToAction(nameof(Index));
             }
             return View(pracownicy);
@@ -140,7 +101,7 @@ namespace PrzychodniaFinal.Controllers
                 return NotFound();
             }
 
-            var pracownicy = await _context.Pracownicies
+            var pracownicy = await context.Pracownicies
                 .FirstOrDefaultAsync(m => m.PracownicyID == id);
             if (pracownicy == null)
             {
@@ -154,15 +115,8 @@ namespace PrzychodniaFinal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pracownicy = await _context.Pracownicies.FindAsync(id);
-            _context.Pracownicies.Remove(pracownicy);
-            await _context.SaveChangesAsync();
+            await service.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        public bool PracownicyExists(int id)
-        {
-            return _context.Pracownicies.Any(e => e.PracownicyID == id);
         }
     }
 }
