@@ -3,11 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-
 <h1>Lista Pracowników</h1>
 
 <p>
-    <a asp-action="Create">Dodaj</a>
+    <a asp-action="Create">
+        <button class="btn dodaj">
+            <span class="glyphicon glyphicon-edit"></span> Dodaj
+        </button>
+    </a>
 </p>
 @using (Html.BeginForm())
 {
@@ -63,9 +66,21 @@
                     @Html.DisplayFor(modelItem => item.KoniecKontraktu)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PracownicyID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PracownicyID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PracownicyID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.PracownicyID">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-edit"></span> Edit
+                        </button>
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.PracownicyID">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-edit"></span> Details
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.PracownicyID">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-edit"></span> Delete
+                        </button>
+                    </a>
                 </td>
             </tr>
         }
