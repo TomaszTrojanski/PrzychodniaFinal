@@ -18,9 +18,35 @@ namespace PrzychodniaFinal.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public ActionResult Index(string sortOrder)
         {
-            return View(await _context.Pracownicies.ToListAsync());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.HireDateSort = sortOrder == "HireDate" ? "hiredate_desc" : "HireDate";
+            ViewBag.EndDateSort = sortOrder == "EndDate" ? "enddate_desc" : "EndDate";
+            var pracownicy = from s in _context.Pracownicies
+                           select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    pracownicy = pracownicy.OrderByDescending(s => s.Nazwisko);
+                    break;
+                case "HireDate":
+                    pracownicy = pracownicy.OrderBy(s => s.DataZatrudnienia);
+                    break;
+                case "EndDate":
+                    pracownicy = pracownicy.OrderBy(s => s.KoniecKontraktu);
+                    break;
+                case "hiredate_desc":
+                    pracownicy = pracownicy.OrderByDescending(s => s.DataZatrudnienia);
+                    break;
+                case "enddate_desc":
+                    pracownicy = pracownicy.OrderByDescending(s => s.KoniecKontraktu);
+                    break;
+                default:
+                    pracownicy = pracownicy.OrderBy(s => s.Nazwisko);
+                    break;
+            }
+            return View(pracownicy.ToList());
         }
         public async Task<IActionResult> Details(int? id)
         {

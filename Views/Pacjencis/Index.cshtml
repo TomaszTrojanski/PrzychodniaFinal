@@ -16,10 +16,13 @@
                 @Html.DisplayNameFor(model => model.Imie)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nazwisko)
+                @Html.ActionLink("Nazwisko", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Pesel)
+            </th>
+            <th>
+                @Html.ActionLink("Data Urodzenia", "Index", new { sortOrder = ViewBag.BirthDateSort })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AdresZamieszkania)
@@ -38,6 +41,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Pesel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataUrodzenia)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AdresZamieszkania)
