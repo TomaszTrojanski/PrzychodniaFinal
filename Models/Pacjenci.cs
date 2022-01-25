@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,9 +39,8 @@ namespace PrzychodniaFinal.Models
 
         [Required(ErrorMessage = "Wprowadź Adres Pacjenta")]
         [MaxLength(100)]
-        [Display(Name = "Adres")]
+        [Display(Name = "Adres")]     
         public string AdresZamieszkania { get; set; }
-
         public virtual ICollection<Choroby> Chorobies { get; set; }
         public virtual ICollection<Recepty> Recepties { get; set; }
         public Pacjenci()

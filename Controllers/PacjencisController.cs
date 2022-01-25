@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,34 @@ namespace PrzychodniaFinal.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Pacjencis.ToListAsync());
+        public IActionResult Index(string sortOrder, string searchString)
+        {    
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.BirthDateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            var pacjenci = from s in _context.Pacjencis
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pacjenci = pacjenci.Where(s => s.Imie.Contains(searchString)
+                                       || s.Nazwisko.Contains(searchString)
+                                       || s.Pesel.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    pacjenci = pacjenci.OrderByDescending(s => s.Nazwisko);
+                    break;
+                case "Date":
+                    pacjenci = pacjenci.OrderBy(s => s.DataUrodzenia);
+                    break;
+                case "date_desc":
+                    pacjenci = pacjenci.OrderByDescending(s => s.DataUrodzenia);
+                    break;
+                default:
+                    pacjenci = pacjenci.OrderBy(s => s.Nazwisko);
+                    break;
+            }
+            return View(pacjenci.ToList());
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,7 +71,7 @@ namespace PrzychodniaFinal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,AdresZamieszkania")] Pacjenci pacjenci)
+        public async Task<IActionResult> Create([Bind("PacjenciID,Imie,Nazwisko,Pesel,DataUrodzenia,AdresZamieszkania")] Pacjenci pacjenci)
         {
             if (ModelState.IsValid)
             {

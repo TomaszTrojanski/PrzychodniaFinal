@@ -9,6 +9,13 @@
 <p>
     <a asp-action="Create">Dodaj</a>
 </p>
+@using (Html.BeginForm())
+{
+    <p>
+        Wyszukaj: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -16,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Imie)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nazwisko)
+                @Html.ActionLink("Nazwisko", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Pesel)
@@ -25,10 +32,10 @@
                 @Html.DisplayNameFor(model => model.AdresZamieszkania)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataZatrudnienia)
+                @Html.ActionLink("Data Zatrudnienia", "Index", new { sortOrder = ViewBag.HireDateSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.KoniecKontraktu)
+                @Html.ActionLink("Koniec Kontraktu", "Index", new { sortOrder = ViewBag.EndDateSort })
             </th>
             <th></th>
         </tr>
