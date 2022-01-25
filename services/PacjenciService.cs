@@ -2,45 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using PrzychodniaFinal.DataAccess;
+using PrzychodniaFinal.Models;
 
 namespace PrzychodniaFinal.services
 {
-    public class PacjenciService
+    public interface IPacjenciServices
     {
-        private readonly PrzychodniaDBContext _context;
+        public Task<List<Pacjenci>> GetPacjenci(string sortOrder, string searchString);
+
+
+
+    }
+    public class PacjenciService:IPacjenciServices
+    {
+        private readonly PrzychodniaDBContext context;
+
         public PacjenciService(PrzychodniaDBContext context)
         {
-            _context = context;
+            this.context = context;
         }
-        public void Edit()
+
+        public async Task<List<Pacjenci>> GetPacjenci(string sortOrder, string searchString)
         {
-            if (id != pacjenci.PacjenciID)
+            var pacjenci = await context.Pacjencis.ToListAsync();
+            if (!String.IsNullOrEmpty(searchString))
             {
-                return NotFound();
+                pacjenci = (List<Pacjenci>)pacjenci.Where(s => s.Imie.Contains(searchString)
+                                                               || s.Nazwisko.Contains(searchString)
+                                                               || s.Pesel.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    pacjenci = pacjenci.OrderByDescending(s => s.Nazwisko).ToList();
+                    break;
+                case "Date":
+                    pacjenci = pacjenci.OrderBy(s => s.DataUrodzenia).ToList();
+                    break;
+                case "date_desc":
+                    pacjenci = pacjenci.OrderByDescending(s => s.DataUrodzenia).ToList();
+                    break;
+                default:
+                    pacjenci = pacjenci.OrderBy(s => s.Nazwisko).ToList();
+                    break;
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(pacjenci);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PacjenciExists(pacjenci.PacjenciID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pacjenci);
+            return pacjenci.ToList();
         }
     }
 }

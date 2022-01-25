@@ -8,45 +8,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PrzychodniaFinal.DataAccess;
 using PrzychodniaFinal.Models;
+using PrzychodniaFinal.services;
 
 namespace PrzychodniaFinal.Controllers
 {
     public class PacjencisController : Controller
     {
         private readonly PrzychodniaDBContext _context;
+        private readonly IPacjenciServices service;
 
-        public PacjencisController(PrzychodniaDBContext context)
+        public PacjencisController(PrzychodniaDBContext context, IPacjenciServices service)
         {
             _context = context;
+            this.service = service;
         }
         public IActionResult Index(string sortOrder, string searchString)
         {    
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.BirthDateSort = sortOrder == "Date" ? "date_desc" : "Date";
-            var pacjenci = from s in _context.Pacjencis
-                           select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                pacjenci = pacjenci.Where(s => s.Imie.Contains(searchString)
-                                       || s.Nazwisko.Contains(searchString)
-                                       || s.Pesel.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    pacjenci = pacjenci.OrderByDescending(s => s.Nazwisko);
-                    break;
-                case "Date":
-                    pacjenci = pacjenci.OrderBy(s => s.DataUrodzenia);
-                    break;
-                case "date_desc":
-                    pacjenci = pacjenci.OrderByDescending(s => s.DataUrodzenia);
-                    break;
-                default:
-                    pacjenci = pacjenci.OrderBy(s => s.Nazwisko);
-                    break;
-            }
-            return View(pacjenci.ToList());
+
+            var pacjenci= service.GetPacjenci(sortOrder, searchString);
+
+            return View(pacjenci);
         }
         public async Task<IActionResult> Details(int? id)
         {
