@@ -75,5 +75,19 @@ namespace PrzychodniaFinal.services
 
             return pacjenci.ToList();
         }
+
+        public static bool IsPacjentValid(Pacjenci pacjenci)
+        {
+            if (pacjenci.Pesel == null) return false;
+            if (pacjenci.Pesel.Length != 11) return false;
+
+            if (pacjenci.Imie == null) return false;
+            if (pacjenci.Imie == "") return false;
+
+            if (pacjenci.Nazwisko == null) return false;
+            if (pacjenci.Nazwisko == "") return false;
+
+            return true;
+        }
     }
 }

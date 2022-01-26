@@ -85,6 +85,22 @@ namespace PrzychodniaFinal.Services
 
             return pracownicy.ToList();
         }
+
+        public static bool IsPracownikValid(Pracownicy pracownicy)
+        {
+            if (pracownicy == null) return false;
+
+            if (pracownicy.Pesel == null) return false;
+            if (pracownicy.Pesel.Length != 11) return false;
+
+            if (pracownicy.Imie == null) return false;
+            if (pracownicy.Imie == "") return false;
+
+            if (pracownicy.Nazwisko == null) return false;
+            if (pracownicy.Nazwisko == "") return false;
+
+            return true;
+        }
     }
 
 }
